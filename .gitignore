@@ -1,0 +1,5 @@
+.idea
+.venv
+.DS_store
+__pycache__
+snp500*
