@@ -69,7 +69,11 @@ class DDMReportBuilder:
         categories = [x for x in range(-hist_data_len + 1, periods + 1)]
         sheet.append([" "] + categories)
         sheet.append(["total_revenue"] + total_revenue_hist + result["total_revenue_forward"])
-        sheet.append(["total_revenue_growth"] + total_revenue_growth + [total_revenue_growth_mean]*periods)
+        tr_growth_rate_forward = []
+        revenue = [total_revenue_hist[-1]] + result["total_revenue_forward"]
+        for i in range(len(revenue) - 1):
+            tr_growth_rate_forward.append(revenue[i+1]/revenue[i] - 1)
+        sheet.append(["total_revenue_growth"] + total_revenue_growth + tr_growth_rate_forward)
         sheet.append([""])
         sheet.append(["prices_t"] + result["prices_t"])
         chart = LineChart()

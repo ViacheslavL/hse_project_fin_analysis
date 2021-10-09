@@ -1,6 +1,8 @@
 from data_reader import get_spx_index, read_data_from_file_to_object
 from ddm_model import DDMModel
+from ddm_retrospective import DDMRetrospective
 from report_builder import DDMReportBuilder
+from retrospective_report_builder import RetrospectiveReportBuilder
 from settings import scenarios
 
 companys = {}
@@ -30,5 +32,24 @@ def run_all():
 
 results = run_all()
 DDMReportBuilder(results, "output.xlsx")
+
+retro_results = []
+for scenario in scenarios:
+    for k, v in companys.items():
+        try:
+                if "AON" not in k:
+                    pass
+  #          if k in scenario["advanced"]:
+                retro_result = DDMRetrospective(company=v, scenario=scenario, index_quotes=spx_quotes, retrospective_window=30)
+                retro_result.data["ticker"] = k
+                retro_results.append(retro_result)
+        except:
+            import traceback
+            traceback.print_exc()
+
+
+RetrospectiveReportBuilder(retro_results, "retrospective_output.xlsx")
+
+
 
 #print(companys)
